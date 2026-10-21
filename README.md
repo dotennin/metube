@@ -1,30 +1,35 @@
-# MeTube
+# MeTube — nochi0105 fork
 
-![Build Status](https://github.com/alexta69/metube/actions/workflows/main.yml/badge.svg)
-![Docker Pulls](https://img.shields.io/docker/pulls/alexta69/metube.svg)
+![Build Status](https://github.com/dotennin/metube/actions/workflows/main.yml/badge.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/nochi0105/metube.svg)
 
 MeTube is a self-hosted web UI for [yt-dlp](https://github.com/yt-dlp/yt-dlp). Paste a link from YouTube or [hundreds of other sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), and it downloads to your server:
 
 * Video, audio, subtitles and thumbnails — from single videos, whole playlists or entire channels.
 * [Subscriptions](https://github.com/alexta69/metube/wiki/Subscriptions) to channels and playlists, which queue new uploads as they appear.
 * Per-download choices of quality, format and folder, plus server-wide [yt-dlp options and presets](https://github.com/alexta69/metube/wiki/yt-dlp-options).
+* Multiple time ranges from one video or audio request, with each selected range saved as a separate numbered clip.
+
+This fork publishes the same MeTube application with the multi-clip download feature enabled. Add up to 50 independent ranges such as `19:19`–`19:55`; MeTube writes files like `Title - clip-01.mp4` and `Title - clip-02.mp4`. Multi-clip ranges are available for direct video and audio downloads and cannot be combined with the legacy single `clip_start` / `clip_end` fields or subscriptions.
 
 📖 **Guides, recipes and a troubleshooting FAQ live in the [wiki](https://github.com/alexta69/metube/wiki)** — many feature requests are already a recipe there, so check it before filing one.
 
-![screenshot1](https://github.com/alexta69/metube/raw/master/screenshot.gif?v=2)
+![screenshot1](https://github.com/dotennin/metube/raw/master/screenshot.gif?v=2)
 
 ## Quick start
 
 ```bash
-docker run -d -p 8081:8081 -v /path/to/downloads:/downloads ghcr.io/alexta69/metube
+docker run -d -p 8081:8081 -v /path/to/downloads:/downloads nochi0105/metube:latest
 ```
+
+The same image is also available from GHCR as `ghcr.io/dotennin/metube:latest`.
 
 Or with Docker Compose:
 
 ```yaml
 services:
   metube:
-    image: ghcr.io/alexta69/metube
+    image: ghcr.io/dotennin/metube:latest
     container_name: metube
     restart: unless-stopped
     ports:
@@ -33,7 +38,9 @@ services:
       - /path/to/downloads:/downloads
 ```
 
-Then open `http://<host>:8081` in your browser. Images are multi-arch (amd64/arm64), and also published on Docker Hub as `alexta69/metube`.
+Then open `http://<host>:8081` in your browser. Images are multi-arch (amd64/arm64) and are published at both `ghcr.io/dotennin/metube` and `nochi0105/metube`.
+
+To use the Docker Hub mirror instead, set the Compose image to `nochi0105/metube:latest`.
 
 ## Configuration
 
@@ -156,10 +163,10 @@ cd /downloads
 yt-dlp <url>
 ```
 
-The [Troubleshooting FAQ](https://github.com/alexta69/metube/wiki/Troubleshooting-FAQ) covers common problems. Ask questions in [Discussions](https://github.com/alexta69/metube/discussions/categories/q-a); [issues](https://github.com/alexta69/metube/issues) are for bugs in MeTube itself.
+The [Troubleshooting FAQ](https://github.com/alexta69/metube/wiki/Troubleshooting-FAQ) covers common problems. Ask questions in [Discussions](https://github.com/dotennin/metube/discussions/categories/q-a); [issues](https://github.com/dotennin/metube/issues) are for bugs in this fork or MeTube itself.
 
 ## Scope and contributing
 
 MeTube's scope is deliberately narrow: it downloads well, and stops once the file is written. Tagging and library organization belong to dedicated tools — point [beets](https://beets.io) (headless, scriptable), [MusicBrainz Picard](https://picard.musicbrainz.org) (GUI, acoustic fingerprinting) or [Lidarr](https://lidarr.audio) (full library manager) at your `AUDIO_DOWNLOAD_DIR`.
 
-Feature requests that fit this scope are welcome, and so are pull requests — for a change that isn't obvious, start a discussion first. [CONTRIBUTING.md](https://github.com/alexta69/metube/blob/master/CONTRIBUTING.md) has the scope policy and how to build and run MeTube locally.
+Feature requests that fit this scope are welcome, and so are pull requests — for a change that isn't obvious, start a discussion first. [CONTRIBUTING.md](https://github.com/dotennin/metube/blob/master/CONTRIBUTING.md) has the scope policy and how to build and run MeTube locally.
